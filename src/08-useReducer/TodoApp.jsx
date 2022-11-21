@@ -1,64 +1,17 @@
-import { useEffect, useReducer } from "react";
+
+import { useTodos } from "../hooks/useTodos";
 import { TodoAdd } from "./TodoAdd";
 import { TodoList } from "./TodoList";
-import { todoReducer } from "./todoReducer";
+
 
 
 
 export const TodoApp = () => {
-
-    const initialState = [
-        // {
-        //     id: new Date().getTime(),
-        //     description: 'rescatar Ironman',
-        //     done: false   
-        // },
-       
-    ];
-
-    const initializer = () => {
-        return JSON.parse(localStorage.getItem('todos')) || [];
-    }
-
-    const [todos, dispatch] = useReducer(todoReducer, initialState, initializer);
-
-    const handlerNewTodo=(todo) => {
-        const action = {
-            type: '[TODO] Add Todo',
-            payload: todo
-        }
-        dispatch(action);
-    }
-
-    const handlerRemoveTodo=(id)=>{
-        const action = {
-            type: '[TODO] Remove Todo',
-            payload: id
-        }
-        dispatch(action);
-        }
-
-    const handlerToggleTodo=(id)=>{
-        
-        const action = {
-            type: '[TODO] Toggle Todo',
-            payload: id
-        }
-
-        dispatch(action);
-
-
-    }
-
-    useEffect(() => {
-      localStorage.setItem('todos', JSON.stringify(todos));    
-      
-    }, [todos])
-    
+  const {todos, handlerNewTodo, handlerRemoveTodo, handlerToggleTodo, todosCounter, todosPending} = useTodos();
 
   return (
     <>
-    <h1>Todos App</h1>
+    <h1>Todos App: {todosCounter} <small>({todosPending} Pendientes)</small></h1>
     <hr />
     <div className="row">
         <div className="col-7">
